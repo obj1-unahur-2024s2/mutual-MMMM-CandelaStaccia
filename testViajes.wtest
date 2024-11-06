@@ -1,0 +1,80 @@
+import viajes.*
+import socios.*
+
+
+describe "Test de ciudades" {
+
+    const ciudad1 = new ExcursionCiudad(atracciones = 4)
+    const tropical1 = new ExcursionCiudadTropical(atracciones = 4)
+    const ciudad2 = new ExcursionCiudad(atracciones = 8)
+    const tropical2 = new ExcursionCiudadTropical(atracciones = 8)
+    const tropical3 = new ExcursionCiudadTropical(atracciones = 10)
+
+  test "test ciudades" {
+    assert.equals(2, ciudad1.diasQueLleva())
+    assert.notThat(ciudad1.implicaEsfuerzo())
+    assert.notThat(ciudad1.sirveParaBroncearse())
+
+    assert.equals(3, tropical1.diasQueLleva())
+    assert.notThat(tropical1.implicaEsfuerzo())
+    assert.that(tropical1.sirveParaBroncearse())
+
+    assert.equals(4, ciudad2.diasQueLleva())
+    assert.that(ciudad2.implicaEsfuerzo())
+    assert.notThat(ciudad2.sirveParaBroncearse())
+
+    assert.equals(5, tropical2.diasQueLleva())
+    assert.that(tropical2.implicaEsfuerzo())
+    assert.that(tropical2.sirveParaBroncearse())
+
+    assert.equals(6, tropical3.diasQueLleva())
+    assert.notThat(tropical3.implicaEsfuerzo())
+    assert.that(tropical3.sirveParaBroncearse())
+  }
+}
+
+
+describe "test de trekking" {
+
+    const trek1 = new Trekking(kilometros = 100, diasDeSol = 130)
+    const trek2 = new Trekking(kilometros = 50, diasDeSol = 240)
+    const trek3 = new Trekking(kilometros = 250, diasDeSol = 130)
+
+  test "test de trekking" {
+    assert.equals(2, trek1.diasQueLleva())
+    assert.that(trek1.implicaEsfuerzo())
+    assert.notThat(trek1.sirveParaBroncearse())
+
+    assert.equals(1, trek2.diasQueLleva())
+    assert.notThat(trek2.implicaEsfuerzo())
+    assert.that(trek2.sirveParaBroncearse())
+
+    assert.equals(5, trek3.diasQueLleva())
+    assert.that(trek3.implicaEsfuerzo())
+    assert.that(trek3.sirveParaBroncearse())
+  }
+}
+
+
+describe "test de socios" {
+    
+    const playa1 = new ViajePlaya(largo = 1000)
+    const playa2 = new ViajePlaya(largo = 2000)
+    const gim = new ClaseDeGimnasia()
+    const roque = new Socio(actividadesRealizadas = [playa1, playa2], maximoActividades = 2, edad = 0)
+
+    const ana = new Socio(actividadesRealizadas = [playa1, playa2], maximoActividades = 3, edad = 0)
+
+  test "test de Roque" {
+    assert.that(roque.esAdoradorDelSol())
+    assert.equals([playa2], roque.actividadesEsforzadas())
+    assert.throwsExceptionWithMessage("Alcanzó el máximo de actividades", {roque.registrarActividad(gim)})
+  }
+
+  test "test de Ana" {
+    ana.registrarActividad(gim)
+
+    assert.notThat(ana.esAdoradorDelSol())
+    assert.equals([playa2, gim], ana.actividadesEsforzadas())
+  }
+}
